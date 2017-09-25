@@ -1,0 +1,2 @@
+include ':app', ':ars-rpc-v4'
+project(':ars-rpc-v4').projectDir = new File('ars-rpc-v3')

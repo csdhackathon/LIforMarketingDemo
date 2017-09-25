@@ -1,0 +1,72 @@
+<resources>
+    <string name="app_name">ARs Contacts</string>
+    <string name="invalid_username_or_password">Invalid username or password !</string>
+    <string name="error_host_name_required">Host name required</string>
+    <string name="error_username_required">Username required</string>
+    <string name="error_password_required">Password required</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_home">ARs Contacts</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="unable_to_connect_odoo">Unable to connect with odoo server</string>
+
+    <string name="searh_title">Search</string>
+    <string name="search_title">searchbar</string>
+    <string name="save">Save</string>
+    <string name="new_contact_create">Contact Created</string>
+    <string name="call">Call</string>
+    <string name="add_contact_to_device">Add to Device Contact</string>
+    <string name="delete_contact">Delete</string>
+    <string name="send_message">Send message</string>
+    <string name="send_mail">Send mail</string>
+    <string name="contact_created">Contact created</string>
+    <string name="label_view">View</string>
+    <string name="menu_sync_label">Sync Contacts</string>
+    <string name="remove_fav_contact">Remove favourite contacts</string>
+    <string name="remove_recent_contact">Remove recent contacts</string>
+    <string name="hint_search_contact">Search contact</string>
+    <string name="select_database">Select database</string>
+    <string name="please_wait">Please wait...</string>
+    <string name="login_in_progress">Login in progress</string>
+    <string name="import_contact_from_device">Import contacts from device</string>
+
+
+    <string name="please_try_again_later">Please try again later.</string>
+    <string name="allow_permissions">Allow permission(s)</string>
+    <string name="screen_title">Know your customers</string>
+    <string name="open_settings">Open Settings</string>
+    <string name="accept_permissions_go_to_settings">You can only continue using the application once you accept these permissions.   To use the application you need to activate user permission under settings.</string>
+    <string name="network_error">Network Error!</string>
+    <string name="pleae_check_your_internet">Please check your Internet Connectivity.</string>
+    <string name="retry">Retry</string>
+    <string name="want_to_enable_your_gps">Your GPS seems to be disabled, do you want to enable it?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="exit_the_app">Exit the app</string>
+    <string name="no_data_available">No data available yet!</string>
+    <string name="address">Address</string>
+    <string name="colon">:</string>
+    <string name="select_drive_time">Select Drive Time</string>
+    <string name="drive_time">Drive Time</string>
+    <string name="min">min</string>
+    <string name="find_customers">Find Customers</string>
+    <string name="next_select_customers">Next: Select Customers</string>
+    <string name="select_customers">Select Customers</string>
+    <string name="configure_api_secret_key">Configure API keys</string>
+    <string name="enter_api_key">Enter API Key</string>
+    <string name="enter_secret_key">Enter Secret Key</string>
+    <string name="todays_shipment">Today\'s Shipments</string>
+    <string name="preview_marketing_content">Preview Marketing Content</string>
+    <string name="check_your_internet_connectivity">Please check your internet connectivity</string>
+    <string name="submit">Submit</string>
+    <string name="marketing_content">Marketing Content</string>
+    <string name="print">Print</string>
+    <string name="back">Back</string>
+    <string name="alert">Alert</string>
+    <string name="api_key_not_found">API key and Secret not found.</string>
+    <string name="key_error">Key Error!</string>
+    <string name="error">Error!</string>
+</resources>
