@@ -23,4 +23,6 @@ Insights Include :
 
 ### Prerequisite:
 
-Enter API_KEY and SECRET in the placeholder in build.gradle and build the app to make it run Locate API.  
+- Enter API_KEY and SECRET in the placeholder in AndroidManifest.xml and build the app to make it run Locate API. 
+- The contact card of a person should be present in the phone directory.
+- Import contacts from device storage to the Application.
