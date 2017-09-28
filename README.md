@@ -2,7 +2,7 @@
 
 # Pitney Bowes SMB Hackathon
 
-### Sample App showcasing consumption of [Pitney Bowes Location Based Narketing APIs]
+### Sample App showcasing consumption of [Pitney Bowes Location Based Marketing APIs]
 
 ### Use Case
 Behavioral and Demographic Insights on visitors of a Business Location
