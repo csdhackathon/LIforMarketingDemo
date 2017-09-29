@@ -2,12 +2,16 @@ package com.ars.utils;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.provider.ContactsContract;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +24,10 @@ import com.ars.R;
 import com.ars.table.ResPartner;
 import com.ars.utils.BitmapUtils;
 
+import pb.ApiClient;
+import pb.locationintelligence.LIAPIGeocodeServiceApi;
+import pb.locationintelligence.model.GeocodeServiceResponse;
+
 public class AddContact extends AppCompatActivity implements View.OnClickListener {
 
     private Toolbar toolbar;
@@ -29,6 +37,9 @@ public class AddContact extends AppCompatActivity implements View.OnClickListene
     private ResPartner resPartner;
     private ImageView profileImage;
     private CheckBox checkBoxIsCompany;
+    private ConstantUnits mConstantUnits;
+    private Utils mUtility;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +50,9 @@ public class AddContact extends AppCompatActivity implements View.OnClickListene
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        mUtility = Utils.getInstance(this);
+        mConstantUnits = ConstantUnits.getInstance();
 
         init();
     }
@@ -73,6 +87,15 @@ public class AddContact extends AppCompatActivity implements View.OnClickListene
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        String poBox = null;
+        String street = null;
+        String city = null;
+        String state = null;
+        String postalCode = null;
+        String country = null;
+        String latitude = null;
+        String longitude = null;
 
         if (item.getItemId() == R.id.menuSave) {
 
@@ -115,12 +138,16 @@ public class AddContact extends AppCompatActivity implements View.OnClickListene
                 values.put("city", "false");
             } else {
                 values.put("city", editCity.getText().toString());
+
+                city = editCity.getText().toString();
             }
 
             if (editStreet.getText().toString().equals("")) {
                 values.put("street", "false");
             } else {
                 values.put("street", editStreet.getText().toString());
+
+                street = editStreet.getText().toString();
             }
 
             if (editStreet2.getText().toString().equals("")) {
@@ -139,6 +166,8 @@ public class AddContact extends AppCompatActivity implements View.OnClickListene
                 values.put("website", "false");
             } else {
                 values.put("website", editWebsite.getText().toString());
+
+
             }
 
             if (editState.getText().toString().equals("")) {
@@ -147,6 +176,8 @@ public class AddContact extends AppCompatActivity implements View.OnClickListene
                 //TODO: state name
 
                 values.put("state_id", "1");
+
+                state = editState.getText().toString();
             }
 
             if (editCountry.getText().toString().equals("")) {
@@ -154,6 +185,8 @@ public class AddContact extends AppCompatActivity implements View.OnClickListene
             } else {
                 //TODO: Country name
                 values.put("country_id", "1");
+
+                country = editCountry.getText().toString();
             }
 
             if (editFax.getText().toString().equals("")) {
@@ -166,6 +199,73 @@ public class AddContact extends AppCompatActivity implements View.OnClickListene
                 values.put("zip", "false");
             } else {
                 values.put("zip", editPincode.getText().toString());
+
+                postalCode = poBox = editPincode.getText().toString();
+            }
+
+            //Get the latitude and longitude
+            final LIAPIGeocodeServiceApi api = new LIAPIGeocodeServiceApi();
+            String datapackBundle = mConstantUnits.PREMIUM;
+
+            ApiClient defaultClient = pb.Configuration.getDefaultApiClient();
+            defaultClient.setoAuthApiKey(mUtility.getMetaDataFromManifest(mConstantUnits.PBGEOMAP_ACCESS_TOKEN));
+            defaultClient.setoAuthSecret(mUtility.getMetaDataFromManifest(mConstantUnits.PBGEOMAP_SECRET_KEY));
+
+
+            country = "USA";  //(country == "" ?  "USA" : country);
+
+            String placeName = null;
+            String mainAddress = street;//"1 Global View, troy, NY";
+            String lastLine = null;
+            String areaName1 = city;
+            String areaName2 = state;
+            String areaName3 = null;
+            String areaName4 = null;
+            Integer postalCode1 = (postalCode != ""? Integer.getInteger(postalCode) : null );
+            String matchMode = null;
+            Boolean fallbackGeo = null;
+            Boolean fallbackPostal = null;
+            Integer maxCands = null;
+            Integer streetOffset = null;
+            String streetOffsetUnits = null;
+            Integer cornerOffset = null;
+            String cornerOffsetUnits = null;
+
+            GeocodeServiceResponse resp = null;
+
+            //For Sync call in main thread.
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+
+            try {
+                Log.i("GeoCode","geocode");
+                resp = api.geocode(datapackBundle, country, placeName, mainAddress, lastLine, areaName1, areaName2, areaName3, areaName4, postalCode1, matchMode, fallbackGeo, fallbackPostal, maxCands, streetOffset, streetOffsetUnits, cornerOffset, cornerOffsetUnits);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            //List candidates = resp.getCandidates();
+            if(resp.getCandidates().size() > 0){
+                values.put("address", (resp.getCandidates().get(0).getFormattedLocationAddress() != null ? street : street));
+                values.put("street", (resp.getCandidates().get(0).getAddress().getStreetName() != null ? street: street));
+                values.put("city", (resp.getCandidates().get(0).getAddress().getAreaName2() != null ? resp.getCandidates().get(0).getAddress().getAreaName2(): ""));
+                values.put("state_id", (resp.getCandidates().get(0).getAddress().getAreaName1() != null ? resp.getCandidates().get(0).getAddress().getAreaName1(): ""));
+                values.put("zip", (resp.getCandidates().get(0).getAddress().getPostCode1() != null ? resp.getCandidates().get(0).getAddress().getPostCode1(): ""));
+                values.put("country_id", (resp.getCandidates().get(0).getAddress().getCountry() != null ? resp.getCandidates().get(0).getAddress().getCountry(): ""));
+
+                values.put("latitude", (resp.getCandidates().get(0).getGeometry().getCoordinates().get(1) != null ? resp.getCandidates().get(0).getGeometry().getCoordinates().get(1) : 0));
+                values.put("longitude", (resp.getCandidates().get(0).getGeometry().getCoordinates().get(0) != null ? resp.getCandidates().get(0).getGeometry().getCoordinates().get(0) : 0));
+            }
+            else{
+                values.put("address", street);
+                values.put("street", street);
+                values.put("city", city);
+                values.put("state_id", state);
+                values.put("zip", postalCode);
+                values.put("country_id", country);
+
+                values.put("latitude", "");
+                values.put("longitude", "");
             }
 
             resPartner.create(values);

@@ -270,8 +270,8 @@ public class HomeActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     values.put("mobile", contact_number);
 
                     if(resp.getCandidates().size() > 0){
-                        values.put("address", (resp.getCandidates().get(0).getFormattedLocationAddress() != null ? resp.getCandidates().get(0).getFormattedLocationAddress() : ""));
-                        values.put("street", (resp.getCandidates().get(0).getAddress().getStreetName() != null ? resp.getCandidates().get(0).getAddress().getStreetName(): ""));
+                        values.put("address", (resp.getCandidates().get(0).getFormattedLocationAddress() != null ? street : street));
+                        values.put("street", (resp.getCandidates().get(0).getAddress().getStreetName() != null ? street: street));
                         values.put("city", (resp.getCandidates().get(0).getAddress().getAreaName2() != null ? resp.getCandidates().get(0).getAddress().getAreaName2(): ""));
                         values.put("state_id", (resp.getCandidates().get(0).getAddress().getAreaName1() != null ? resp.getCandidates().get(0).getAddress().getAreaName1(): ""));
                         values.put("zip", (resp.getCandidates().get(0).getAddress().getPostCode1() != null ? resp.getCandidates().get(0).getAddress().getPostCode1(): ""));
